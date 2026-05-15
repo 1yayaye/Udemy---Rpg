@@ -1,4 +1,5 @@
 using UnityEngine.EventSystems;
+using UnityEngine;
 
 public class UI_CraftSlot : UI_ItemSlot
 {
@@ -11,12 +12,17 @@ public class UI_CraftSlot : UI_ItemSlot
     public void SetupCraftSlot(ItemData_Equipment _data)
     {
         if (_data == null)
+        {
+            CleanUpSlot();
             return;
+        }
 
+        item = new InventoryItem(_data);
         item.data = _data;
 
         itemImage.sprite = _data.itemIcon;
-        itemText.text = _data.itemName;
+        itemImage.color = Color.white;
+        itemText.text = LocalizationText.Translate(_data.itemName);
 
         if (itemText.text.Length > 12)
             itemText.fontSize = itemText.fontSize * .7f;
@@ -26,6 +32,14 @@ public class UI_CraftSlot : UI_ItemSlot
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        ui.craftWindow.SetupCraftWindow(item.data as ItemData_Equipment);
+        if (item == null || item.data == null)
+            return;
+
+        ItemData_Equipment equipment = item.data as ItemData_Equipment;
+
+        if (equipment == null)
+            return;
+
+        ui.craftWindow.SetupCraftWindow(equipment);
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -27,6 +26,12 @@ public class UI_CraftList : MonoBehaviour , IPointerDownHandler
 
         for (int i = 0; i < craftEquipment.Count; i++)
         {
+            if (craftEquipment[i] == null)
+            {
+                Debug.LogWarning("Craft list contains a missing equipment reference.");
+                continue;
+            }
+
             GameObject newSlot = Instantiate(craftSlotPrefab, craftSlotParent);
             newSlot.GetComponent<UI_CraftSlot>().SetupCraftSlot(craftEquipment[i]);
         }
@@ -35,11 +40,25 @@ public class UI_CraftList : MonoBehaviour , IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         SetupCraftList();
+        SetupDefaultCraftWindow();
     }
 
     public void SetupDefaultCraftWindow()
     {
-        if (craftEquipment[0] != null)
-            GetComponentInParent<UI>().craftWindow.SetupCraftWindow(craftEquipment[0]);
+        UI ui = GetComponentInParent<UI>();
+
+        if (ui == null || ui.craftWindow == null)
+            return;
+
+        foreach (ItemData_Equipment equipment in craftEquipment)
+        {
+            if (equipment != null)
+            {
+                ui.craftWindow.SetupCraftWindow(equipment);
+                return;
+            }
+        }
+
+        ui.craftWindow.SetupCraftWindow(null);
     }
 }

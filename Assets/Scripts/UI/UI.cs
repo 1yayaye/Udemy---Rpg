@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI : MonoBehaviour, ISaveManager
 {
@@ -16,7 +18,10 @@ public class UI : MonoBehaviour, ISaveManager
     [SerializeField] private GameObject optionsUI;
     [SerializeField] private GameObject inGameUI;
 
-
+    [Header("Pause backdrop")]
+    [SerializeField] private Color pauseBackdropColor = new Color(0f, 0f, 0f, 1f);
+    [SerializeField] private Color pauseTextColor = new Color(0.95f, 0.96f, 0.98f, 1f);
+    private GameObject pauseBackdrop;
 
     public UI_SkillToolTip skillToolTip;
     public UI_ItemTooltip itemToolTip;
@@ -27,6 +32,8 @@ public class UI : MonoBehaviour, ISaveManager
 
     private void Awake()
     {
+        EnsurePauseBackdrop();
+        ApplyReadablePauseTextColors();
 
         SwitchTo(skillTreeUI); // we need this to assign events on skill tree slots before we asssign events on skill scripts
         fadeScreen.gameObject.SetActive(true);
@@ -45,6 +52,11 @@ public class UI : MonoBehaviour, ISaveManager
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SwitchWithEscape();
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.C))
             SwitchWithKeyTo(charcaterUI);
@@ -59,8 +71,36 @@ public class UI : MonoBehaviour, ISaveManager
         if (Input.GetKeyDown(KeyCode.O))
             SwitchWithKeyTo(optionsUI);
 
-       
 
+    }
+
+    private void SwitchWithEscape()
+    {
+        if (IsEndScreenActive())
+            return;
+
+        if (IsAnyMenuOpen())
+            SwitchTo(inGameUI);
+        else
+            SwitchTo(optionsUI);
+    }
+
+    private bool IsAnyMenuOpen()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            GameObject child = transform.GetChild(i).gameObject;
+
+            if (IsMenuObject(child) && child.activeSelf)
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool IsEndScreenActive()
+    {
+        return endText.activeSelf || restartButton.activeSelf;
     }
 
 
@@ -69,13 +109,13 @@ public class UI : MonoBehaviour, ISaveManager
 
         for (int i = 0; i < transform.childCount; i++)
         {
-            bool fadeScreen = transform.GetChild(i).GetComponent<UI_FadeScreen>() != null; // we need this to keep fade screen game object active
+            GameObject child = transform.GetChild(i).gameObject;
 
-
-            if (fadeScreen == false)
-                transform.GetChild(i).gameObject.SetActive(false);
+            if (ShouldKeepActiveDuringMenuSwitch(child) == false)
+                child.SetActive(false);
         }
 
+        SetPauseBackdropActive(_menu != null && _menu != inGameUI);
 
 
         if (_menu != null)
@@ -110,11 +150,139 @@ public class UI : MonoBehaviour, ISaveManager
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            if (transform.GetChild(i).gameObject.activeSelf && transform.GetChild(i).GetComponent<UI_FadeScreen>() == null)
+            GameObject child = transform.GetChild(i).gameObject;
+
+            if (IsMenuObject(child) && child.activeSelf)
                 return;
         }
 
         SwitchTo(inGameUI);
+    }
+
+    private void EnsurePauseBackdrop()
+    {
+        Transform existingBackdrop = transform.Find("PauseBackdrop");
+
+        if (existingBackdrop != null)
+            pauseBackdrop = existingBackdrop.gameObject;
+        else
+            pauseBackdrop = new GameObject("PauseBackdrop", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+
+        pauseBackdrop.transform.SetParent(transform, false);
+        pauseBackdrop.transform.SetSiblingIndex(0);
+
+        RectTransform backdropRect = pauseBackdrop.GetComponent<RectTransform>();
+        backdropRect.anchorMin = Vector2.zero;
+        backdropRect.anchorMax = Vector2.one;
+        backdropRect.anchoredPosition = Vector2.zero;
+        backdropRect.sizeDelta = Vector2.zero;
+        backdropRect.pivot = new Vector2(.5f, .5f);
+
+        Image backdropImage = pauseBackdrop.GetComponent<Image>();
+        backdropImage.color = pauseBackdropColor;
+        backdropImage.raycastTarget = false;
+
+        pauseBackdrop.SetActive(false);
+    }
+
+    private void ApplyReadablePauseTextColors()
+    {
+        ApplyReadableTextColors(charcaterUI);
+        ApplyReadableTextColors(skillTreeUI);
+        ApplyReadableTextColors(craftUI);
+        ApplyReadableTextColors(optionsUI);
+    }
+
+    private void ApplyReadableTextColors(GameObject root)
+    {
+        if (root == null)
+            return;
+
+        TextMeshProUGUI[] texts = root.GetComponentsInChildren<TextMeshProUGUI>(true);
+
+        foreach (TextMeshProUGUI text in texts)
+        {
+            text.text = LocalizationText.Translate(text.text);
+            Color textColor = text.color;
+
+            if (!IsReadable(textColor))
+            {
+                textColor = pauseTextColor;
+                text.color = textColor;
+            }
+
+            UseReadableChineseFontIfNeeded(text);
+            text.faceColor = textColor;
+        }
+    }
+
+    private void UseReadableChineseFontIfNeeded(TextMeshProUGUI text)
+    {
+        if (!ContainsNonAscii(text.text))
+            return;
+
+        TMP_FontAsset fontAsset = FindReadableChineseFont();
+
+        if (fontAsset != null)
+            text.font = fontAsset;
+    }
+
+    private bool ContainsNonAscii(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return false;
+
+        foreach (char character in text)
+        {
+            if (character > 127)
+                return true;
+        }
+
+        return false;
+    }
+
+    private TMP_FontAsset FindReadableChineseFont()
+    {
+        if (TMP_Settings.fallbackFontAssets == null)
+            return null;
+
+        foreach (TMP_FontAsset fontAsset in TMP_Settings.fallbackFontAssets)
+        {
+            if (fontAsset != null && fontAsset.name.Contains("NotoSansSC"))
+                return fontAsset;
+        }
+
+        return null;
+    }
+
+    private bool IsReadable(Color color)
+    {
+        float luminance = color.r * 0.2126f + color.g * 0.7152f + color.b * 0.0722f;
+
+        return color.a >= .95f && luminance >= .55f;
+    }
+
+    private void SetPauseBackdropActive(bool active)
+    {
+        if (pauseBackdrop == null)
+            EnsurePauseBackdrop();
+
+        pauseBackdrop.SetActive(active);
+
+        if (active)
+            pauseBackdrop.transform.SetSiblingIndex(0);
+    }
+
+    private bool IsMenuObject(GameObject child)
+    {
+        return child != inGameUI
+            && child != pauseBackdrop
+            && child.GetComponent<UI_FadeScreen>() == null;
+    }
+
+    private bool ShouldKeepActiveDuringMenuSwitch(GameObject child)
+    {
+        return child == pauseBackdrop || child.GetComponent<UI_FadeScreen>() != null;
     }
 
     public void SwitchOnEndScreen()
