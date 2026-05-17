@@ -33,10 +33,13 @@ public class Clone_Skill : Skill
     [Header("Crystal instead of clone")]
     [SerializeField] private UI_SkillTreeSlot crystalInseadUnlockButton;
     public bool crystalInseadOfClone;
+    private float defaultAttackMultiplier;
 
 
     protected override void Start()
     {
+        defaultAttackMultiplier = attackMultiplier;
+
         base.Start();
 
 
@@ -49,6 +52,8 @@ public class Clone_Skill : Skill
     #region Unlock region
     protected override void CheckUnlock()
     {
+        attackMultiplier = defaultAttackMultiplier;
+
         UnlockCloneAttack();
         UnlockAggresiveClone();
         UnlockMultiClone();
@@ -57,37 +62,31 @@ public class Clone_Skill : Skill
 
     private void UnlockCloneAttack()
     {
-        if (cloneAttackUnlockButton.unlocked)
-        {
-            canAttack = true;
+        canAttack = cloneAttackUnlockButton.unlocked;
+
+        if (canAttack)
             attackMultiplier = cloneAttackMultiplier;
-        }
     }
 
     private void UnlockAggresiveClone()
     {
-        if (aggresiveCloneUnlockButton.unlocked)
-        {
-            canApplyOnHitEffect = true;
+        canApplyOnHitEffect = aggresiveCloneUnlockButton.unlocked;
+
+        if (canApplyOnHitEffect)
             attackMultiplier = aggresiveCloneAttackMultiplier;
-        }
     }
 
     private void UnlockMultiClone()
     {
-        if (multipleUnlockButton.unlocked)
-        {
-            canDuplicateClone = true;
+        canDuplicateClone = multipleUnlockButton.unlocked;
+
+        if (canDuplicateClone)
             attackMultiplier = multiCloneAttackMultiplier;
-        }
     }
 
     private void UnlockCrystalInstead()
     {
-        if(crystalInseadUnlockButton.unlocked)
-        {
-            crystalInseadOfClone = true;
-        }
+        crystalInseadOfClone = crystalInseadUnlockButton.unlocked;
     }
 
 

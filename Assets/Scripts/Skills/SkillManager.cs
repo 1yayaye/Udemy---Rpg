@@ -33,4 +33,15 @@ public class SkillManager : MonoBehaviour
         parry = GetComponent<Parry_Skill>();
         dodge = GetComponent<Dodge_Skill>();
     }
+
+    public void RefreshSkillUnlocks()
+    {
+        dash?.RefreshUnlocks();
+        clone?.RefreshUnlocks();
+        sword?.RefreshUnlocks();
+        blackhole?.RefreshUnlocks();
+        crystal?.RefreshUnlocks();
+        parry?.RefreshUnlocks();
+        dodge?.RefreshUnlocks();
+    }
 }

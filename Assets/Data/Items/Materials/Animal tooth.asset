@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Animal tooth
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Animal tooth
+  itemName: 兽牙
   itemIcon: {fileID: 1900874589, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: 9337930988e275044b8e74fa4ca51510
   dropChance: 100

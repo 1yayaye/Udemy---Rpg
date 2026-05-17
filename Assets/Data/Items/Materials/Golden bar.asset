@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Golden bar
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Golden bar
+  itemName: 金锭
   itemIcon: {fileID: -957751355, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: 839fd2910ad77e744a35af1a16bb4118
   dropChance: 100

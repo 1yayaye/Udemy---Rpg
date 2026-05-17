@@ -28,7 +28,7 @@ public class GameData
         this.lostCurrencyAmount = 0;
 
 
-        this.currency = 0;
+        this.currency = 2000;
         skillTree = new SerializableDictionary<string, bool>();
         inventory = new SerializableDictionary<string, int>();
         equipmentId = new List<string>();

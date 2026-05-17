@@ -51,20 +51,17 @@ public class Parry_Skill : Skill
     }
     private void UnlockParry()
     {
-        if (parryUnlockButton.unlocked)
-            parryUnlocked = true;
+        parryUnlocked = parryUnlockButton.unlocked;
     }
 
     private void UnlockParryRestore()
     {
-        if (restoreUnlockButton.unlocked)
-            restoreUnlocked = true;
+        restoreUnlocked = restoreUnlockButton.unlocked;
     }
 
     private void UnlockParryWithMirage()
     {
-        if (parryWithMirageUnlockButton.unlocked)
-            parryWithMirageUnlocked = true;
+        parryWithMirageUnlocked = parryWithMirageUnlockButton.unlocked;
     }
 
     public void MakeMirageOnParry(Transform _respawnTransform)

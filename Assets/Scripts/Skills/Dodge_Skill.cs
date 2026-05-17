@@ -38,12 +38,18 @@ public class Dodge_Skill : Skill
             Inventory.instance.UpdateStatsUI();
             dodgeUnlocked = true;
         }
+
+        if (!unlockDodgeButton.unlocked && dodgeUnlocked)
+        {
+            player.stats.evasion.RemoveModifier(evasionAmount);
+            Inventory.instance.UpdateStatsUI();
+            dodgeUnlocked = false;
+        }
     }
 
     private void UnlockMirageDodge()
     {
-        if (unlockMirageDodge.unlocked)
-            dodgeMirageUnlocked = true;
+        dodgeMirageUnlocked = unlockMirageDodge.unlocked;
     }
 
     public void CreateMirageOnDodge()

@@ -41,6 +41,57 @@ public class UIContrastTests
     }
 
     [Test]
+    public void DeathScreenText_AppliesReadableTextColors()
+    {
+        UI ui = CreateInactiveUI();
+        GameObject endTextRoot = new GameObject("EndText");
+        GameObject restartButtonRoot = new GameObject("RestartButton");
+        endTextRoot.transform.SetParent(ui.transform, false);
+        restartButtonRoot.transform.SetParent(ui.transform, false);
+
+        TextMeshProUGUI endText = CreateText(endTextRoot.transform, Color.black);
+        TextMeshProUGUI restartText = CreateText(restartButtonRoot.transform, Color.black);
+        SetPrivateField(ui, "endText", endTextRoot);
+        SetPrivateField(ui, "restartButton", restartButtonRoot);
+
+        InvokePrivate(ui, "ApplyReadablePauseTextColors");
+
+        AssertReadable(endText.color);
+        AssertReadable(restartText.color);
+
+        Object.DestroyImmediate(ui.gameObject);
+    }
+
+    [Test]
+    public void SwitchOnEndScreen_EnablesNonBlockingBlackBackdrop()
+    {
+        UI ui = CreateInactiveUI();
+        GameObject endTextRoot = new GameObject("EndText");
+        GameObject restartButtonRoot = new GameObject("RestartButton");
+        UI_FadeScreen fadeScreen = new GameObject("FadeScreen").AddComponent<UI_FadeScreen>();
+        Animator animator = fadeScreen.gameObject.AddComponent<Animator>();
+        endTextRoot.transform.SetParent(ui.transform, false);
+        restartButtonRoot.transform.SetParent(ui.transform, false);
+        fadeScreen.transform.SetParent(ui.transform, false);
+
+        SetPrivateField(ui, "endText", endTextRoot);
+        SetPrivateField(ui, "restartButton", restartButtonRoot);
+        SetPrivateField(ui, "fadeScreen", fadeScreen);
+        SetPrivateField(fadeScreen, "anim", animator);
+        ui.gameObject.SetActive(true);
+
+        ui.SwitchOnEndScreen();
+
+        GameObject backdrop = ui.transform.Find("PauseBackdrop").gameObject;
+        Image backdropImage = backdrop.GetComponent<Image>();
+        Assert.IsTrue(backdrop.activeSelf);
+        Assert.IsFalse(backdropImage.raycastTarget);
+        Assert.AreEqual(Color.black, backdropImage.color);
+
+        Object.DestroyImmediate(ui.gameObject);
+    }
+
+    [Test]
     public void SkillTooltip_DefaultTextColorsAreReadableOnDarkPanels()
     {
         UI_SkillToolTip tooltip = new GameObject("SkillTooltip").AddComponent<UI_SkillToolTip>();
@@ -166,6 +217,17 @@ public class UIContrastTests
         uiRoot.SetActive(false);
 
         return uiRoot.AddComponent<UI>();
+    }
+
+    private static TextMeshProUGUI CreateText(Transform parent, Color color)
+    {
+        TextMeshProUGUI text = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI))
+            .GetComponent<TextMeshProUGUI>();
+        text.transform.SetParent(parent, false);
+        text.text = "Readable text";
+        text.color = color;
+
+        return text;
     }
 
     private static void InvokePrivate(object target, string methodName, params object[] parameters)

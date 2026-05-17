@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Glue
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Glue
+  itemName: 胶水
   itemIcon: {fileID: 404454020, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: 201dcf32c23b82649acb65349e91bd6a
   dropChance: 0

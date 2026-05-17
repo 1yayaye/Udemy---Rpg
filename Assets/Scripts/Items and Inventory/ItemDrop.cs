@@ -11,14 +11,20 @@ public class ItemDrop : MonoBehaviour
 
     public virtual void GenerateDrop()
     {
-        if (possibleDrop.Length <= 0)
+        dropList.Clear();
+
+        if (possibleDrop == null || possibleDrop.Length <= 0)
             return;
 
         for (int i = 0; i < possibleDrop.Length; i++)
         {
-            if (Random.Range(0, 100) <= possibleDrop[i].dropChance)
+            ItemData itemData = possibleDrop[i];
+            if (itemData == null)
+                continue;
+
+            if (Random.Range(0, 100) <= itemData.dropChance)
             {
-                dropList.Add(possibleDrop[i]);
+                dropList.Add(itemData);
             }
         }
 

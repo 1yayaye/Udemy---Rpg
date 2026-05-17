@@ -23,35 +23,39 @@ public class SkeletonBattleState : EnemyState
         if (player.GetComponent<PlayerStats>().isDead)
             stateMachine.ChangeState(enemy.moveState);
 
-        
+
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (enemy.IsPlayerDetected())
+        if (enemy.ShouldLoseTarget())
         {
-            stateTimer = enemy.battleTime;
+            stateMachine.ChangeState(enemy.idleState);
+            return;
+        }
 
-            if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
+        enemy.FacePlayer();
+
+        RaycastHit2D playerDetected = enemy.IsPlayerDetected();
+
+        if (playerDetected && playerDetected.distance < enemy.attackDistance)
+        {
+            if (CanAttack())
             {
-                if (CanAttack())
-                    stateMachine.ChangeState(enemy.attackState);
+                stateMachine.ChangeState(enemy.attackState);
+                return;
             }
         }
-        else 
+
+        moveDir = enemy.GetPlayerDirection();
+
+        if (!enemy.CanMoveSafelyInDirection(moveDir))
         {
-            if (stateTimer < 0 || Vector2.Distance(player.transform.position, enemy.transform.position) > 7)
-                stateMachine.ChangeState(enemy.idleState);
+            enemy.SetZeroVelocity();
+            return;
         }
-
-
-
-        if (player.position.x > enemy.transform.position.x)
-            moveDir = 1;
-        else if (player.position.x < enemy.transform.position.x)
-            moveDir = -1;
 
         enemy.SetVelocity(enemy.moveSpeed * moveDir, rb.velocity.y);
     }

@@ -9,7 +9,7 @@ public class UI_StatToolTip : UI_ToolTip
     
     public void ShowStatToolTip( string _text)
     {
-        description.text = _text;
+        description.text = LocalizationText.Translate(_text);
         AdjustPosition();
 
         gameObject.SetActive(true);

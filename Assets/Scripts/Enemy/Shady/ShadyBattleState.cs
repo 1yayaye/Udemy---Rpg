@@ -12,7 +12,7 @@ public class ShadyBattleState : EnemyState
 
     public ShadyBattleState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Shady _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
     {
-  
+
         this.enemy = _enemy;
     }
 
@@ -37,26 +37,29 @@ public class ShadyBattleState : EnemyState
     {
         base.Update();
 
-        if (enemy.IsPlayerDetected())
+        if (enemy.ShouldLoseTarget())
         {
-            stateTimer = enemy.battleTime;
-
-            if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
-                enemy.stats.KillEntity(); // this enteres dead state which triggers explosion + drop items and souls
-                
-        }
-        else
-        {
-            if (stateTimer < 0 || Vector2.Distance(player.transform.position, enemy.transform.position) > 7)
-                stateMachine.ChangeState(enemy.idleState);
+            stateMachine.ChangeState(enemy.idleState);
+            return;
         }
 
+        enemy.FacePlayer();
 
+        RaycastHit2D playerDetected = enemy.IsPlayerDetected();
 
-        if (player.position.x > enemy.transform.position.x)
-            moveDir = 1;
-        else if (player.position.x < enemy.transform.position.x)
-            moveDir = -1;
+        if (playerDetected && playerDetected.distance < enemy.attackDistance)
+        {
+            enemy.stats.KillEntity(); // this enteres dead state which triggers explosion + drop items and souls
+            return;
+        }
+
+        moveDir = enemy.GetPlayerDirection();
+
+        if (!enemy.CanMoveSafelyInDirection(moveDir))
+        {
+            enemy.SetZeroVelocity();
+            return;
+        }
 
         enemy.SetVelocity(enemy.moveSpeed * moveDir, rb.velocity.y);
     }

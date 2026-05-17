@@ -899,7 +899,7 @@ MonoBehaviour:
   attackCheck: {fileID: 5529630770742481659}
   attackCheckRadius: 1.2
   groundCheck: {fileID: 5529630770826284235}
-  groundCheckDistance: 1
+  groundCheckDistance: 1.2
   wallCheck: {fileID: 5529630770897307768}
   wallCheckDistance: 1.5
   whatIsGround:
@@ -914,7 +914,8 @@ MonoBehaviour:
   moveSpeed: 3
   idleTime: 2
   battleTime: 7
-  agroDistance: 2
+  agroDistance: 15
+  loseTargetDistance: 18
   attackDistance: 15
   attackCooldown: 0
   minAttackCooldown: 0.5

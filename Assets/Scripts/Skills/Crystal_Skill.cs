@@ -36,9 +36,12 @@ public class Crystal_Skill : Skill
     [SerializeField] private float multiStackCooldown;
     [SerializeField] private float useTimeWondow;
     [SerializeField] private List<GameObject> crystalLeft = new List<GameObject>();
+    private float defaultCooldown;
 
     protected override void Start()
     {
+        defaultCooldown = cooldown;
+
         base.Start();
 
         unlockCrystalButton.GetComponent<Button>().onClick.AddListener(UnlockCrystal);
@@ -55,6 +58,8 @@ public class Crystal_Skill : Skill
 
     protected override void CheckUnlock()
     {
+        cooldown = defaultCooldown;
+
         UnlockCrystal();
         UnlockCrystalMirage();
         UnlockExplosiveCrystal();
@@ -65,35 +70,30 @@ public class Crystal_Skill : Skill
     }
     private void UnlockCrystal()
     {
-        if (unlockCrystalButton.unlocked)
-            crystalUnlocked = true;
+        crystalUnlocked = unlockCrystalButton.unlocked;
     }
 
     private void UnlockCrystalMirage()
     {
-        if (unlockCloneInstaedButton.unlocked)
-            cloneInsteadOfCrystal = true;
+        cloneInsteadOfCrystal = unlockCloneInstaedButton.unlocked;
     }
 
     private void UnlockExplosiveCrystal()
     {
-        if (unlockExplosiveButton.unlocked)
-        {
-            canExplode = true;
+        canExplode = unlockExplosiveButton.unlocked;
+
+        if (canExplode)
             cooldown = explisoveCooldown;
-        }
     }
 
     private void UnlockMovingCrystal()
     {
-        if (unlockMovingCrystalButton.unlocked)
-            canMoveToEnemy = true;
+        canMoveToEnemy = unlockMovingCrystalButton.unlocked;
     }
 
     private void UnlockMultiStack()
     {
-        if (unlockMovingCrystalButton.unlocked)
-            canUseMultiStacks = true;
+        canUseMultiStacks = unlockMultiStackButton.unlocked;
     }
 
     #endregion     // here we unlock crystal skills

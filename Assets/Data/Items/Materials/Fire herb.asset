@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fire herb
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Fire herb
+  itemName: 火焰草
   itemIcon: {fileID: 1386026132, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: aa2bc36c8c6e18d4fa19d98a060e572b
   dropChance: 0

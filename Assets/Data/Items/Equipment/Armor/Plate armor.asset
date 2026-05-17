@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Plate armor
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: Plate armor
+  itemName: 板甲
   itemIcon: {fileID: -1581127718, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   dropChance: 23.1
   equipmentType: 1

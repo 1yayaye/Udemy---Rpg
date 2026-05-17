@@ -72,7 +72,9 @@ public class EnemyStats : CharacterStats
 
         enemy.Die();
 
-        PlayerManager.instance.currency += soulsDropAmount.GetValue();
+        int souls = soulsDropAmount.GetValue();
+        PlayerManager.instance.currency += souls;
+        WebGLScoreTracker.instance?.AddScore(souls);
 
 
         Destroy(gameObject, 5f);

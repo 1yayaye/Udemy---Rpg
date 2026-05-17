@@ -22,10 +22,13 @@ public class UI_StatSlot : MonoBehaviour , IPointerEnterHandler, IPointerExitHan
 
 
         if(statNameText != null)
-            statNameText.text = statName;
+            statNameText.text = LocalizationText.Translate(statName);
     }
     void Start()
     {
+        if (statNameText != null)
+            statNameText.text = LocalizationText.Translate(statName);
+
         UpdateStatValueUI();
 
         ui = GetComponentInParent<UI>();

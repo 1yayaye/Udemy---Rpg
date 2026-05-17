@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Crystal
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Crystal
+  itemName: 水晶
   itemIcon: {fileID: 925843482, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: a180bc7902d002b4e930905c4affb542
   dropChance: 100

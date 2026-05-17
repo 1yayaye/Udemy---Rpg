@@ -73,7 +73,7 @@ public class UI_InGame : MonoBehaviour
             soulsAmount = PlayerManager.instance.GetCurrency();
 
 
-        currentSouls.text = ((int)soulsAmount).ToString();
+        currentSouls.text = $"{LocalizationText.Translate("Souls")} {(int)soulsAmount}";
     }
 
     private void UpdateHealthUI()

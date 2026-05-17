@@ -152,6 +152,9 @@ Packages/packages-lock.json linguist-generated
 *.otf                   lfs
 *.ttf                   lfs
 
+# Generated TMP font assets with embedded atlas data
+Assets/Graphics/Font/*SDF.asset lfs
+
 # Executable/Installer
 *.apk                   lfs
 *.exe                   lfs

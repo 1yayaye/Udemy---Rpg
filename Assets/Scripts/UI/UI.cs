@@ -191,6 +191,8 @@ public class UI : MonoBehaviour, ISaveManager
         ApplyReadableTextColors(skillTreeUI);
         ApplyReadableTextColors(craftUI);
         ApplyReadableTextColors(optionsUI);
+        ApplyReadableTextColors(endText);
+        ApplyReadableTextColors(restartButton);
     }
 
     private void ApplyReadableTextColors(GameObject root)
@@ -287,6 +289,7 @@ public class UI : MonoBehaviour, ISaveManager
 
     public void SwitchOnEndScreen()
     {
+        SetPauseBackdropActive(true);
         fadeScreen.FadeOut();
         StartCoroutine(EndScreenCorutione());
     }

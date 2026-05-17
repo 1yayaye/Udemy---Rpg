@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Moon water
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Moon water
+  itemName: 月亮水
   itemIcon: {fileID: 1165916932, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: a0300e0089d439943998db8ef1c2617f
   dropChance: 0

@@ -26,6 +26,7 @@ public class Enemy : Entity
 
     [Header("Attack info")]
     public float agroDistance = 2;
+    public float loseTargetDistance = 7;
     public float attackDistance = 2;
     public float attackCooldown;
     public float minAttackCooldown = 1;
@@ -135,7 +136,63 @@ public class Enemy : Entity
 
     }
 
-    public virtual RaycastHit2D IsPlayerDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, 50, whatIsPlayer);
+    public float DistanceToPlayer()
+    {
+        if (PlayerManager.instance == null || PlayerManager.instance.player == null)
+            return Mathf.Infinity;
+
+        return Vector2.Distance(transform.position, PlayerManager.instance.player.transform.position);
+    }
+
+    public bool IsPlayerDead()
+    {
+        if (PlayerManager.instance == null || PlayerManager.instance.player == null)
+            return true;
+
+        return PlayerManager.instance.player.GetComponent<PlayerStats>().isDead;
+    }
+
+    public bool IsPlayerInAgroRange() => DistanceToPlayer() < agroDistance;
+    public bool IsPlayerBeyondLoseTargetDistance() => DistanceToPlayer() > loseTargetDistance;
+    public bool ShouldLoseTarget() => IsPlayerDead() || IsPlayerBeyondLoseTargetDistance();
+
+    public int GetPlayerDirection()
+    {
+        if (PlayerManager.instance == null || PlayerManager.instance.player == null)
+            return facingDir;
+
+        if (PlayerManager.instance.player.transform.position.x > transform.position.x)
+            return 1;
+        else if (PlayerManager.instance.player.transform.position.x < transform.position.x)
+            return -1;
+
+        return facingDir;
+    }
+
+    public void FacePlayer() => FlipController(GetPlayerDirection());
+
+    public bool IsWallDetectedInDirection(int _direction) => Physics2D.Raycast(wallCheck.position, Vector2.right * _direction, wallCheckDistance, whatIsGround);
+    public bool IsGroundDetectedBelow() => Physics2D.Raycast(groundCheck.position, Vector2.down, Mathf.Infinity, whatIsGround);
+
+    public bool CanMoveSafelyInDirection(int _direction)
+    {
+        if (IsWallDetectedInDirection(_direction))
+            return false;
+
+        if (IsGroundDetected())
+            return true;
+
+        return IsGroundDetectedBelow();
+    }
+
+    public virtual RaycastHit2D IsPlayerDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, attackDistance, whatIsPlayer);
+
+    protected virtual void OnValidate()
+    {
+        if (loseTargetDistance < agroDistance)
+            loseTargetDistance = agroDistance;
+    }
+
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();

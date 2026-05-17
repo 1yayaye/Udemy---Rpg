@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Amulet of God
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: Amulet of god
+  itemName: 神之护符
   itemIcon: {fileID: -245851270, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   dropChance: 4.5
   equipmentType: 2
@@ -34,8 +34,4 @@ MonoBehaviour:
   fireDamage: 0
   iceDamage: 0
   lightingDamage: 15
-  craftingMaterials:
-  - data: {fileID: 11400000, guid: b1342fd16e2c376479833731e2df12f3, type: 2}
-    stackSize: 0
-  - data: {fileID: 11400000, guid: 6835c34bd80fc9c468d2f549f4b6220a, type: 2}
-    stackSize: 0
+  craftingMaterials: []

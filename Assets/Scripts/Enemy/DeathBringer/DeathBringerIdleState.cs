@@ -31,8 +31,10 @@ public class DeathBringerIdleState : EnemyState
     {
         base.Update();
 
-        if (Vector2.Distance(player.transform.position, enemy.transform.position) < 7)
+        if (enemy.IsPlayerInAgroRange())
             enemy.bossFightBegun = true;
+        else if (enemy.IsPlayerBeyondLoseTargetDistance())
+            enemy.bossFightBegun = false;
 
 
         if (Input.GetKeyDown(KeyCode.V))

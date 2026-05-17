@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Cloth
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Cloth
+  itemName: 布料
   itemIcon: {fileID: 2133846500, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: d4606b3a097405a48b469cfa439b193b
   dropChance: 100

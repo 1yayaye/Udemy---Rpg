@@ -23,8 +23,12 @@ public class PlayerStats : CharacterStats
         base.Die();
         player.Die();
 
-        GameManager.instance.lostCurrencyAmount = PlayerManager.instance.currency;
+        int deathSouls = PlayerManager.instance.currency;
+        GameManager.instance.lostCurrencyAmount = deathSouls;
+        WebGLScoreTracker.instance?.SetScore(deathSouls);
+        WebGLScoreTracker.instance?.SubmitRun(false);
         PlayerManager.instance.currency = 0;
+        WebGLScoreTracker.instance?.SetScore(0);
 
         GetComponent<PlayerItemDrop>()?.GenerateDrop();
     }

@@ -16,8 +16,8 @@ public class UI_ItemTooltip : UI_ToolTip
         if (item == null)
             return;
 
-        itemNameText.text = item.itemName;
-        itemTypeText.text = item.equipmentType.ToString();
+        itemNameText.text = LocalizationText.Translate(item.itemName);
+        itemTypeText.text = LocalizationText.EquipmentType(item.equipmentType);
         itemDescription.text = item.GetDescription();
 
         AdjustFontSize(itemNameText);

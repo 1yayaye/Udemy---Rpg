@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Iron Sword
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: Iron Sword
+  itemName: 铁剑
   itemIcon: {fileID: -671158514, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: 799e1c3e34db60c4388bf2537ac816ba
   dropChance: 0

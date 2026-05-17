@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fire flask
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: Fire flask
+  itemName: 火焰药瓶
   itemIcon: {fileID: 1923829048, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   dropChance: 0
   equipmentType: 3

@@ -139,7 +139,7 @@ public class ItemData_Equipment : ItemData
             if (itemEffects[i].effectDescription.Length > 0)
             {
                 sb.AppendLine();
-                sb.AppendLine("Unique: " + itemEffects[i].effectDescription);
+                sb.AppendLine(LocalizationText.Translate("Unique:") + " " + LocalizationText.Translate(itemEffects[i].effectDescription));
                 descriptionLength++;
             }
         }
@@ -169,7 +169,7 @@ public class ItemData_Equipment : ItemData
                 sb.AppendLine();
 
             if (_value > 0)
-                sb.Append("+ " + _value + " " + _name);
+                sb.Append("+ " + _value + " " + LocalizationText.Translate(_name));
 
             descriptionLength++;
         }       

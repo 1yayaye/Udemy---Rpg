@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Glass
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Glass
+  itemName: 玻璃
   itemIcon: {fileID: 1656236034, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: 851b2617e69f79c4db6a4c9278516982
   dropChance: 100

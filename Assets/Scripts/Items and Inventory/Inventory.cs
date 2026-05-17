@@ -285,9 +285,9 @@ public class Inventory : MonoBehaviour , ISaveManager
         }
 
 
-        for (int i = 0; i < materialsToRemove.Count; i++)
+        for (int i = 0; i < _requiredMaterials.Count; i++)
         {
-            RemoveItem(materialsToRemove[i].data);
+            RemoveRequiredMaterialStack(materialsToRemove[i].data, _requiredMaterials[i].stackSize);
         }
 
         AddItem(_itemToCraft);
@@ -299,6 +299,33 @@ public class Inventory : MonoBehaviour , ISaveManager
     public List<InventoryItem> GetEquipmentList() => equipment;
 
     public List<InventoryItem> GetStashList() => stash;
+
+    internal void RemoveRequiredMaterialStack(ItemData itemToRemove, int requiredStackSize)
+    {
+        RemoveRequiredMaterialStack(stash, stashDictianory, itemToRemove, requiredStackSize);
+        UpdateSlotUI();
+    }
+
+    internal static void RemoveRequiredMaterialStack(
+        List<InventoryItem> stashItems,
+        Dictionary<ItemData, InventoryItem> stashItemsDictionary,
+        ItemData itemToRemove,
+        int requiredStackSize)
+    {
+        if (!stashItemsDictionary.TryGetValue(itemToRemove, out InventoryItem stashValue))
+            return;
+
+        for (int i = 0; i < requiredStackSize; i++)
+        {
+            stashValue.RemoveStack();
+        }
+
+        if (stashValue.stackSize <= 0)
+        {
+            stashItems.Remove(stashValue);
+            stashItemsDictionary.Remove(itemToRemove);
+        }
+    }
 
     public ItemData_Equipment GetEquipment(EquipmentType _type)
     {

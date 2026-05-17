@@ -29,26 +29,38 @@ public class DeathBringerBattleState : EnemyState
     {
         base.Update();
 
-        if (enemy.IsPlayerDetected())
+        if (enemy.ShouldLoseTarget())
         {
-            stateTimer = enemy.battleTime;
+            stateMachine.ChangeState(enemy.idleState);
+            return;
+        }
 
-            if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
+        enemy.FacePlayer();
+
+        RaycastHit2D playerDetected = enemy.IsPlayerDetected();
+
+        if (playerDetected && playerDetected.distance < enemy.attackDistance)
+        {
+            if (CanAttack())
             {
-                if (CanAttack())
-                    stateMachine.ChangeState(enemy.attackState);
-                else
-                    stateMachine.ChangeState(enemy.idleState);
+                stateMachine.ChangeState(enemy.attackState);
+                return;
             }
         }
 
-        if (player.position.x > enemy.transform.position.x)
-            moveDir = 1;
-        else if (player.position.x < enemy.transform.position.x)
-            moveDir = -1;
+        moveDir = enemy.GetPlayerDirection();
 
-        if (enemy.IsPlayerDetected() && enemy.IsPlayerDetected().distance < enemy.attackDistance - .1f)
+        if (enemy.DistanceToPlayer() < enemy.attackDistance - .1f)
+        {
+            enemy.SetZeroVelocity();
             return;
+        }
+
+        if (!enemy.CanMoveSafelyInDirection(moveDir))
+        {
+            enemy.SetZeroVelocity();
+            return;
+        }
 
         enemy.SetVelocity(enemy.moveSpeed * moveDir, rb.velocity.y);
     }

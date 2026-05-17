@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Blue wolf armor
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: Blue wolf armor
+  itemName: 蓝狼护甲
   itemIcon: {fileID: 288293509, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: 0dd5b227fb7b62541b0fbccda677392d
   dropChance: 0

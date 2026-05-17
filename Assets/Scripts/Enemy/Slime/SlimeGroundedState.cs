@@ -28,7 +28,7 @@ public class SlimeGroundedState : EnemyState
     {
         base.Update();
 
-        if (enemy.IsPlayerDetected() || Vector2.Distance(enemy.transform.position, player.transform.position) < enemy.agroDistance)
+        if (enemy.IsPlayerInAgroRange())
         {
             stateMachine.ChangeState(enemy.battleState);
         }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Thread
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Thread
+  itemName: 线
   itemIcon: {fileID: 1748745940, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: eba8ceb1cae4615479d5ce6a9d61367d
   dropChance: 100

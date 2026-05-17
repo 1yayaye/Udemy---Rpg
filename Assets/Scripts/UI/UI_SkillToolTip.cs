@@ -13,7 +13,7 @@ public class UI_SkillToolTip : UI_ToolTip
     [SerializeField] private Color skillTextColor = new Color(0.87f, 0.89f, 0.92f, 1f);
     [SerializeField] private Color skillCostColor = new Color(0.95f, 0.96f, 0.98f, 1f);
 
-    public void ShowToolTip(string _skillDescprtion,string _skillName,int _price)
+    public void ShowToolTip(string _skillDescprtion,string _skillName,int _price, bool canRollback = false)
     {
         if (Input.GetKey(KeyCode.LeftControl))
             return; // this hides tooltip if you hide left control
@@ -21,6 +21,10 @@ public class UI_SkillToolTip : UI_ToolTip
         skillName.text = LocalizationText.Translate(_skillName);
         skillText.text = LocalizationText.Translate(_skillDescprtion);
         skillCost.text = LocalizationText.Translate("Cost:") + " " + _price;
+
+        if (canRollback)
+            skillCost.text += "\n右键回退，返还 " + _price + " 灵魂";
+
         ApplyReadableColors();
 
         AdjustPosition();

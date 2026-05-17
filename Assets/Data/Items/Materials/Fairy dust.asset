@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fairy dust
   m_EditorClassIdentifier: 
   itemType: 0
-  itemName: Fairy dust
+  itemName: 妖精粉尘
   itemIcon: {fileID: 1397189960, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: eb240d8e2c8358d448769b8c5bb1af05
   dropChance: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rogue's jacket
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: Rogue's jacket
+  itemName: 游侠夹克
   itemIcon: {fileID: 1667790894, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemId: 7d1998873a09b094e99b326bbbc9cccc
   dropChance: 0

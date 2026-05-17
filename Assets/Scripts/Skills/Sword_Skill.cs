@@ -39,6 +39,7 @@ public class Sword_Skill : Skill
     [SerializeField] private GameObject swordPrefab;
     [SerializeField] private Vector2 launchForce;
     [SerializeField] private float swordGravity;
+    private float defaultSwordGravity;
     [SerializeField] private float freezeTimeDuration;
     [SerializeField] private float returnSpeed;
 
@@ -62,10 +63,10 @@ public class Sword_Skill : Skill
 
     protected override void Start()
     {
+        defaultSwordGravity = swordGravity;
         base.Start();
 
         GenereateDots();
-        SetupGraivty();
 
 
 
@@ -86,6 +87,8 @@ public class Sword_Skill : Skill
             swordGravity = pierceGravity;
         else if(swordType == SwordType.Spin)
             swordGravity = spinGravity;
+        else
+            swordGravity = defaultSwordGravity;
     }
 
     protected override void Update()
@@ -129,32 +132,33 @@ public class Sword_Skill : Skill
 
     protected override void CheckUnlock()
     {
+        swordType = SwordType.Regular;
+        swordGravity = defaultSwordGravity;
+
         UnlockSword();
         UnlockBounceSword();
         UnlockSpinSword();
         UnlockPierceSword();
         UnlockTimeStop();
         UnlockVulnurable();
+        SetupGraivty();
     }
     private void UnlockTimeStop()
     {
-        if (timeStopUnlockButton.unlocked)
-            timeStopUnlocked = true;
+        timeStopUnlocked = timeStopUnlockButton.unlocked;
     }
-    
+
     private void UnlockVulnurable()
     {
-        if (vulnerableUnlockButton.unlocked)
-            vulnerableUnlocked = true;
+        vulnerableUnlocked = vulnerableUnlockButton.unlocked;
     }
 
     private void UnlockSword()
     {
-        if (swordUnlockButton.unlocked)
-        {
+        swordUnlocked = swordUnlockButton.unlocked;
+
+        if (swordUnlocked)
             swordType = SwordType.Regular;
-            swordUnlocked = true;
-        }
     }
 
     private void UnlockBounceSword()

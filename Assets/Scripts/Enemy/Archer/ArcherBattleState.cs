@@ -28,30 +28,36 @@ public class ArcherBattleState : EnemyState
     {
         base.Update();
 
-        if (enemy.IsPlayerDetected())
+        if (enemy.ShouldLoseTarget())
         {
-            stateTimer = enemy.battleTime;
-
-            if (enemy.IsPlayerDetected().distance < enemy.safeDistance)
-            {
-                if (CanJump())
-                    stateMachine.ChangeState(enemy.jumpState);
-            }
-
-            if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
-            {
-                if (CanAttack())
-                    stateMachine.ChangeState(enemy.attackState);
-            }
+            stateMachine.ChangeState(enemy.idleState);
+            return;
         }
-        else
-        {
-            if (stateTimer < 0 || Vector2.Distance(player.transform.position, enemy.transform.position) > 7)
-                stateMachine.ChangeState(enemy.idleState);
-        }
-
 
         BattleStateFlipControll();
+
+        RaycastHit2D playerDetected = enemy.IsPlayerDetected();
+
+        if (playerDetected)
+        {
+            if (playerDetected.distance < enemy.safeDistance)
+            {
+                if (CanJump())
+                {
+                    stateMachine.ChangeState(enemy.jumpState);
+                    return;
+                }
+            }
+
+            if (playerDetected.distance < enemy.attackDistance)
+            {
+                if (CanAttack())
+                {
+                    stateMachine.ChangeState(enemy.attackState);
+                    return;
+                }
+            }
+        }
     }
 
     private void BattleStateFlipControll()

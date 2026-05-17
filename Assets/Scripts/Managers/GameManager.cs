@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour, ISaveManager
     public int lostCurrencyAmount;
     [SerializeField] private float lostCurrencyX;
     [SerializeField] private float lostCurrencyY;
-    private bool pasuedGame;
 
     private void Awake()
     {
@@ -33,35 +32,24 @@ public class GameManager : MonoBehaviour, ISaveManager
         checkpoints = FindObjectsOfType<Checkpoint>();
 
         player = PlayerManager.instance.player.transform;
+        WebGLScoreTracker.EnsureInstance();
+        WebGLLeaderboardClient.NotifyReady();
+        WebGLScoreTracker.instance?.NotifyState();
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
             RestartScene();
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            if (!pasuedGame)
-            {
-                pasuedGame = true;
-                GameManager.instance.PauseGame(pasuedGame);
-            }
-            else
-            {
-                pasuedGame = false;
-                GameManager.instance.PauseGame(pasuedGame);
-            }
-
-        }
     }
     public void RestartScene()
-    {   
+    {
         SaveManager.instance.SaveGame();
+        WebGLScoreTracker.instance?.ResetRun();
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
     }
 
-    
+
 
     public void LoadData(GameData _data) => StartCoroutine(LoadWithDelay(_data));
 

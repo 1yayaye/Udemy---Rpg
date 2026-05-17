@@ -12,6 +12,7 @@ public class LostCurrencyController : MonoBehaviour
         {
             Debug.Log("currency picked up");
             PlayerManager.instance.currency += currency;
+            WebGLScoreTracker.instance?.SetScore(PlayerManager.instance.currency);
             Destroy(this.gameObject);
         }
     }

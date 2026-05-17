@@ -28,6 +28,12 @@ public class Skill : MonoBehaviour
     {
 
     }
+
+    public void RefreshUnlocks()
+    {
+        CheckUnlock();
+    }
+
     public virtual bool CanUseSkill()
     {
         if (cooldownTimer < 0)
@@ -37,7 +43,7 @@ public class Skill : MonoBehaviour
             return true;
         }
 
-        player.fx.CreatePopUpText("Cooldown");
+        player.fx.CreatePopUpText(LocalizationText.Translate("Cooldown"));
         return false;
     }
 
