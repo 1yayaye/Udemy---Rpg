@@ -75,6 +75,7 @@ public class EnemyStats : CharacterStats
         int souls = soulsDropAmount.GetValue();
         PlayerManager.instance.currency += souls;
         WebGLScoreTracker.instance?.AddScore(souls);
+        AchievementManager.instance?.RecordEnemyKilled(enemy, souls);
 
 
         Destroy(gameObject, 5f);

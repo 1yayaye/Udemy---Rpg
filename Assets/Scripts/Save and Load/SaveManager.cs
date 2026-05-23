@@ -35,6 +35,7 @@ public class SaveManager : MonoBehaviour
     private void Start()
     {
         dataHandler = new FileDataHandler(Application.persistentDataPath, fileName,encryptData);
+        AchievementManager.EnsureInstance();
         saveManagers = FindAllSaveManagers();
 
         //Invoke("LoadGame", .05f);

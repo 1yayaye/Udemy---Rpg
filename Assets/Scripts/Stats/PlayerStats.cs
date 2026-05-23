@@ -29,6 +29,7 @@ public class PlayerStats : CharacterStats
         WebGLScoreTracker.instance?.SubmitRun(false);
         PlayerManager.instance.currency = 0;
         WebGLScoreTracker.instance?.SetScore(0);
+        AchievementManager.instance?.RecordPlayerDeath();
 
         GetComponent<PlayerItemDrop>()?.GenerateDrop();
     }

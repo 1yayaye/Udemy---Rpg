@@ -125,6 +125,7 @@ public class Inventory : MonoBehaviour , ISaveManager
         RemoveItem(_item);
 
         UpdateSlotUI();
+        AchievementManager.instance?.RecordEquipmentEquipped();
     }
 
     public void UnequipItem(ItemData_Equipment itemToRemove)
@@ -292,6 +293,7 @@ public class Inventory : MonoBehaviour , ISaveManager
 
         AddItem(_itemToCraft);
         Debug.Log("Here is your item " + _itemToCraft.name);
+        AchievementManager.instance?.RecordItemCrafted();
 
         return true;
     }
@@ -354,6 +356,7 @@ public class Inventory : MonoBehaviour , ISaveManager
             flaskCooldown = currentFlask.itemCooldown;
             currentFlask.Effect(null);
             lastTimeUsedFlask = Time.time;
+            AchievementManager.instance?.RecordFlaskUsed();
         }
         else
             Debug.Log("Flask on cooldown;");

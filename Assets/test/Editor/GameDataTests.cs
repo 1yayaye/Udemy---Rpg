@@ -20,6 +20,8 @@ public class GameDataTests
         Assert.NotNull(data.equipmentId);
         Assert.NotNull(data.checkpoints);
         Assert.NotNull(data.volumeSettings);
+        Assert.NotNull(data.achievements);
+        Assert.NotNull(data.achievementProgress);
     }
 
     [Test]

@@ -10,6 +10,8 @@ public class GameData
     public SerializableDictionary<string, bool> skillTree;
     public SerializableDictionary<string, int> inventory;
     public List<string> equipmentId;
+    public SerializableDictionary<string, bool> achievements;
+    public SerializableDictionary<string, int> achievementProgress;
 
 
     public SerializableDictionary<string, bool> checkpoints;
@@ -32,6 +34,8 @@ public class GameData
         skillTree = new SerializableDictionary<string, bool>();
         inventory = new SerializableDictionary<string, int>();
         equipmentId = new List<string>();
+        achievements = new SerializableDictionary<string, bool>();
+        achievementProgress = new SerializableDictionary<string, int>();
 
         closestCheckpointId = string.Empty;
         checkpoints = new SerializableDictionary<string, bool>();

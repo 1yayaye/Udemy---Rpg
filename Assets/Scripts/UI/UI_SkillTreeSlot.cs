@@ -81,6 +81,7 @@ public class UI_SkillTreeSlot : MonoBehaviour , IPointerEnterHandler , IPointerE
         unlocked = true;
         ApplyVisualState();
         SkillManager.instance?.RefreshSkillUnlocks();
+        AchievementManager.instance?.RecordSkillUnlocked();
     }
 
     public void OnPointerClick(PointerEventData eventData)

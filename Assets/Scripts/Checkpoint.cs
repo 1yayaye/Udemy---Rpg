@@ -29,11 +29,16 @@ public class Checkpoint : MonoBehaviour
 
     public void ActivateCheckpoint()
     { 
-        if (activationStatus == false)
+        bool wasInactive = activationStatus == false;
+
+        if (wasInactive)
             AudioManager.instance.PlaySFX(4, transform);
         
 
         activationStatus = true;
         anim.SetBool("active", true);
+
+        if (wasInactive)
+            AchievementManager.instance?.RecordCheckpointActivated();
     }
 }

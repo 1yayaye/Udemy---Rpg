@@ -27,6 +27,8 @@ public class FileDataHandlerTests
         FileDataHandler handler = new FileDataHandler(tempDirectory, "save.json", false);
         GameData data = new GameData();
         data.currency = 42;
+        data.achievements.Add("first_blood", true);
+        data.achievementProgress.Add("monster_hunter", 7);
 
         handler.Save(data);
         GameData loadedData = handler.Load();
@@ -34,6 +36,8 @@ public class FileDataHandlerTests
         Assert.IsTrue(File.Exists(Path.Combine(tempDirectory, "save.json")));
         Assert.NotNull(loadedData);
         Assert.AreEqual(42, loadedData.currency);
+        Assert.IsTrue(loadedData.achievements["first_blood"]);
+        Assert.AreEqual(7, loadedData.achievementProgress["monster_hunter"]);
     }
 
     [Test]

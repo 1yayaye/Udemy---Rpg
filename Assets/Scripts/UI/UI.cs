@@ -16,7 +16,9 @@ public class UI : MonoBehaviour, ISaveManager
     [SerializeField] private GameObject skillTreeUI;
     [SerializeField] private GameObject craftUI;
     [SerializeField] private GameObject optionsUI;
+    [SerializeField] private GameObject achievementsUI;
     [SerializeField] private GameObject inGameUI;
+    [SerializeField] private UI_AchievementPopup achievementPopup;
 
     [Header("Pause backdrop")]
     [SerializeField] private Color pauseBackdropColor = new Color(0f, 0f, 0f, 1f);
@@ -32,6 +34,7 @@ public class UI : MonoBehaviour, ISaveManager
 
     private void Awake()
     {
+        EnsureAchievementUI();
         EnsurePauseBackdrop();
         ApplyReadablePauseTextColors();
 
@@ -71,6 +74,8 @@ public class UI : MonoBehaviour, ISaveManager
         if (Input.GetKeyDown(KeyCode.O))
             SwitchWithKeyTo(optionsUI);
 
+        if (Input.GetKeyDown(KeyCode.P))
+            SwitchWithKeyTo(achievementsUI);
 
     }
 
@@ -191,8 +196,30 @@ public class UI : MonoBehaviour, ISaveManager
         ApplyReadableTextColors(skillTreeUI);
         ApplyReadableTextColors(craftUI);
         ApplyReadableTextColors(optionsUI);
+        ApplyReadableTextColors(achievementsUI);
         ApplyReadableTextColors(endText);
         ApplyReadableTextColors(restartButton);
+    }
+
+    private void EnsureAchievementUI()
+    {
+        AchievementManager.EnsureInstance();
+
+        if (achievementsUI == null)
+        {
+            GameObject achievementsObject = new GameObject("Achievements_UI", typeof(RectTransform));
+            achievementsObject.transform.SetParent(transform, false);
+            achievementsObject.AddComponent<UI_Achievements>();
+            achievementsUI = achievementsObject;
+            achievementsUI.SetActive(false);
+        }
+
+        if (achievementPopup == null)
+        {
+            GameObject popupObject = new GameObject("AchievementPopup_UI", typeof(RectTransform));
+            popupObject.transform.SetParent(transform, false);
+            achievementPopup = popupObject.AddComponent<UI_AchievementPopup>();
+        }
     }
 
     private void ApplyReadableTextColors(GameObject root)
@@ -279,12 +306,15 @@ public class UI : MonoBehaviour, ISaveManager
     {
         return child != inGameUI
             && child != pauseBackdrop
+            && child != achievementPopup?.gameObject
             && child.GetComponent<UI_FadeScreen>() == null;
     }
 
     private bool ShouldKeepActiveDuringMenuSwitch(GameObject child)
     {
-        return child == pauseBackdrop || child.GetComponent<UI_FadeScreen>() != null;
+        return child == pauseBackdrop
+            || child == achievementPopup?.gameObject
+            || child.GetComponent<UI_FadeScreen>() != null;
     }
 
     public void SwitchOnEndScreen()
